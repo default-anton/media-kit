@@ -204,13 +204,24 @@ class NativePlayer extends PlatformPlayer {
       // isPlayingStateChangeAllowed = false;
 
       for (int i = 0; i < playlist.length; i++) {
-        await _command(
-          [
-            'loadfile',
-            playlist[i].uri,
-            'append',
-          ],
-        );
+        final List<String> commandArgs = [
+          'loadfile',
+          playlist[i].uri,
+          'append',
+        ];
+
+        if (playlist[i].externalAudioFile != null) {
+          final options = <String>[
+            "audio-file=${playlist[i].externalAudioFile!.uri}"
+          ];
+          if (playlist[i].audioDelay != null) {
+            options.add(
+                'audio-delay=${(playlist[i].audioDelay!.inMilliseconds / 1000).toStringAsFixed(3)}');
+          }
+          commandArgs.add(options.join(','));
+        }
+
+        await _command(commandArgs);
       }
 
       // If [play] is `true`, then exit paused state.
@@ -1750,6 +1761,8 @@ class NativePlayer extends PlatformPlayer {
                     start: current[i].start,
                     end: current[i].end,
                     extras: current[i].extras,
+                    externalAudioFile: current[i].externalAudioFile,
+                    audioDelay: current[i].audioDelay,
                   ),
                 ),
               )

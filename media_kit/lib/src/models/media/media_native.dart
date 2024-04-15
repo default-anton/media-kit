@@ -97,6 +97,16 @@ class Media extends Playable {
   /// Default: `null`.
   final Duration? end;
 
+  /// External audio file.
+  ///
+  /// Default: `null`.
+  final Media? externalAudioFile;
+
+  /// Audio delay.
+  ///
+  /// Default: `null`.
+  final Duration? audioDelay;
+
   /// Whether instance is instantiated from [Media.memory].
   bool _memory = false;
 
@@ -107,6 +117,8 @@ class Media extends Playable {
     Map<String, String>? httpHeaders,
     this.start,
     this.end,
+    this.externalAudioFile,
+    this.audioDelay,
   })  : uri = normalizeURI(resource),
         extras = extras ?? cache[normalizeURI(resource)]?.extras,
         httpHeaders =
@@ -199,6 +211,8 @@ class Media extends Playable {
     Map<String, String>? httpHeaders,
     Duration? start,
     Duration? end,
+    Media? externalAudioFile,
+    Duration? audioDelay,
   }) {
     return Media(
       uri ?? this.uri,
@@ -206,6 +220,8 @@ class Media extends Playable {
       httpHeaders: httpHeaders ?? this.httpHeaders,
       start: start ?? this.start,
       end: end ?? this.end,
+      externalAudioFile: externalAudioFile ?? this.externalAudioFile,
+      audioDelay: audioDelay ?? this.audioDelay,
     );
   }
 
